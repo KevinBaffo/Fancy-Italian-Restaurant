@@ -52,6 +52,6 @@ p {
 .container {
   align-items: center;
   width: 100%;
-  white-space: 2px;
+  white-space: 20px;
   display: inline-block;
 }

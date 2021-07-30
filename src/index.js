@@ -4,15 +4,13 @@ import menu from "./menu";
 const menuItems = menu.items;
 
 // sort menu items using menuOrder
-const sortMenuItems = () => {
+const sortItems = () => {
   menuItems.sort((a, b) => {
     return a.menuOrder - b.menuOrder;
   });
 };
 
-const render = () => {
-  sortMenuItems();
-
+const renderMenu = () => {
   // create menu categories
   const starters = document.querySelector("#starters");
   const pasta = document.querySelector("#pasta");
@@ -26,18 +24,19 @@ const render = () => {
     const price = document.createElement("h3");
     price.textContent = `$${(Math.round(item.price * 100) / 100).toFixed(2)}`;
 
-    const name = document.createElement("h3");
-    name.textContent = item.name + " ~ " + price.textContent;
+    const namePlusPrice = document.createElement("h3");
+    namePlusPrice.textContent = item.name + " ~ " + price.textContent;
 
     const description = document.createElement("p");
     description.textContent = item.description;
 
     if (item.spicy) {
-      name.classList.add("spicy");
+      namePlusPrice.classList.add("spicy", "center");
       container.classList.add("spicy-items");
     }
 
-    container.append(name, description);
+    // build container
+    container.append(namePlusPrice, description);
 
     // assign item to category using type
     if (item.type === "starters") {
@@ -50,16 +49,21 @@ const render = () => {
   });
 };
 
-const output = () => {
-  sortMenuItems();
-  render();
-  const box = document.querySelector("#check");
+// filtering spicy items
+const filterSpicy = () => {
   const spicyItems = document.querySelectorAll(".spicy-items");
-  box.onClick = () => {
+  const showSpicy = document.querySelector("#check");
+  showSpicy.addEventListener("change", function (e) {
     spicyItems.forEach((item) => {
-      item.style.display = box.checked ? "block" : "none";
+      if (showSpicy.checked) {
+        item.style.display = "block";
+      } else {
+        item.style.display = "none";
+      }
     });
-  };
+  });
 };
 
-output();
+sortItems();
+renderMenu();
+filterSpicy();
